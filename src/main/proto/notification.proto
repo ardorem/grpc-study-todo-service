@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.notification.grpc";
+
+package notification;
+
+service NotificationService {
+  // Unary RPC
+  rpc SendNotification(SendNotificationRequest) returns (NotificationResponse);
+
+  // Server Streaming RPC
+  rpc StreamNotifications(StreamNotificationRequest) returns (stream Notification);
+}
+
+message SendNotificationRequest {
+  string user_id = 1;
+  string title = 2;
+  string message = 3;
+  string type = 4; // INFO, SUCCESS, WARNING, ERROR
+}
+
+message NotificationResponse {
+  bool success = 1;
+  string message = 2;
+  string notification_id = 3;
+}
+
+message StreamNotificationRequest {
+  string user_id = 1;
+}
+
+message Notification {
+  string id = 1;
+  string user_id = 2;
+  string title = 3;
+  string message = 4;
+  string type = 5;
+  int64 timestamp = 6;
+  bool read = 7;
+}

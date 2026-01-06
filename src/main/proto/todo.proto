@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.study.grpcstudytodoservice";
+
+package todo;
+
+service TodoService {
+  // Unary RPC
+  rpc CreateTodo(CreateTodoRequest) returns (TodoResponse);
+  rpc GetTodo(GetTodoRequest) returns (TodoResponse);
+  rpc UpdateTodo(UpdateTodoRequest) returns (TodoResponse);
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse);
+  rpc ListTodos(ListTodosRequest) returns (TodoListResponse);
+
+  // Server Streaming RPC
+  rpc StreamTodoUpdates(StreamRequest) returns (stream TodoUpdate);
+}
+
+message Todo {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool completed = 4;
+  int64 created_at = 5;
+  int64 updated_at = 6;
+  string user_id = 7;
+}
+
+message CreateTodoRequest {
+  string title = 1;
+  string description = 2;
+  string user_id = 3;
+}
+
+message GetTodoRequest {
+  string id = 1;
+}
+
+message UpdateTodoRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool completed = 4;
+}
+
+message DeleteTodoRequest {
+  string id = 1;
+}
+
+message DeleteTodoResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ListTodosRequest {
+  string user_id = 1;
+  int32 page = 2;
+  int32 size = 3;
+}
+
+message TodoResponse {
+  Todo todo = 1;
+  string message = 2;
+}
+
+message TodoListResponse {
+  repeated Todo todos = 1;
+  int32 total = 2;
+}
+
+message StreamRequest {
+  string user_id = 1;
+}
+
+message TodoUpdate {
+  string event_type = 1; // CREATED, UPDATED, DELETED
+  Todo todo = 2;
+  int64 timestamp = 3;
+}
