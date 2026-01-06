@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: grpc-study-todo-service
+
+grpc:
+  server:
+    port: 9090
+  client:
+    notification-service:
+      address: 'static://localhost:9091'
+      negotiation-type: plaintext
+
+logging:
+  level:
+    com.example: DEBUG
